@@ -1,12 +1,19 @@
 {
   "name": "fb-hackathon",
   "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/timbuckley/fb-journalism-project-hackathon.git",
+  "main": "bot.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timbuckley/fb-journalism-project-hackathon.git"
+  },
   "author": "Tim Buckley <timothypbuckley@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.15.2",
-    "request": "^2.81.0"
+    "request": "^2.72.0",
+    "express": "*",
+    "body-parser": "*"
+  },
+  "scripts": {
+    "start": "node bot.js"
   }
 }

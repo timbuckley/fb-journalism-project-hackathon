@@ -77,7 +77,7 @@ var vincent = "1292253867476452"; //
 // var chris = "10155471735122971";
 var chris = "1414479738602901"; //
 
-var admins = [chris];
+var admins = [vincent, tim];
 
 var ALL_SENDERS = [];
 

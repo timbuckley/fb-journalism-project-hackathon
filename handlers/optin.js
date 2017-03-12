@@ -6,12 +6,13 @@ function OptIn() {
     }
 
     function addUser(messageText, params) {
-
+        console.log('messageText: ', messageText);
+        console.log('params: ', params);
     }
 }
 
 module.exports = OptIn;
 
 function _parseUserFromOptin(message) {
-    
+
 }

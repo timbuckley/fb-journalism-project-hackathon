@@ -101,9 +101,9 @@ function receivedMessage(event) {
   const OPT_IN_TRIGGER = 'Opt in';
   const ADD_LOCATION_TRIGGER = 'Add location';
 
-  const availableCommands = 'Availble Commands:' 
-    + '"Opt in" \n'
-    + '"Add location" \n';
+  const availableCommands = 'Availble Commands:\n\n' 
+    + '"Opt in" \n\n'
+    + '"Add location" \n\n';
 
   console.log("Received message for user %d and page %d at %d with message:", 
     sender.id, recipient.id, ts);
@@ -116,7 +116,7 @@ function receivedMessage(event) {
   if (messageText) {
     switch (true) {
       case (OPT_IN_TRIGGER === messageText):
-        OptIn.addUser(messageText.replace(OPT_IN_TRIGGER, '').trim(), {timestamp: ts});
+        OptIn.addUser(messageText.replace(OPT_IN_TRIGGER, '').trim(), {sender: sender, timestamp: ts});
 
         break;
 

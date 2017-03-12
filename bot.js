@@ -153,14 +153,14 @@ function receivedMessage(event) {
       const coordinates = messageAttachments[0].payload.coordinates;
 
       if (messageAttachments[0].type === 'location' && coordinates && coordinates.lat.length > 0 && coordinates.long.length > 0) {
-        Firebase.addLocation(sender.id, {coordinates: {lat: coordinates.lat, long: coordinates.long}, ts: ts})
+        Firebase.addLocation(sender.id, coordinates)
           .then(function() {
             sendTextMessage(sender.id, 'Location Added.');
           }).catch(function() {
-            sendTextMessage(sender.id, 'Sorry. Unable to retrieve location.');
+            sendTextMessage(sender.id, 'Sorry. Unable to add location.');
           }).done();  
       } else {
-        sendTextMessage(sender.id, 'Sorry! Unable to retrieve location.');
+        sendTextMessage(sender.id, 'Apologies! Unable to add location.');
       }
     }
 

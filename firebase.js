@@ -26,7 +26,10 @@ function Firebase() {
 
   function addLocation(userId, params) {
     const postData = {
-      coordinates: params.coordinates,
+      coordinates: {
+        lat: params.coordinates.lat,
+        long: params.coordinates.long
+      },
       ts: params.ts
     }
 

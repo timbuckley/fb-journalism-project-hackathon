@@ -106,7 +106,7 @@ function receivedMessage(event) {
     + '"Add location" \n';
 
   console.log("Received message for user %d and page %d at %d with message:", 
-    senderID, recipientID, timeOfMessage);
+    sender.id, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
 
   var messageId = message.mid;
@@ -140,7 +140,7 @@ function receivedMessage(event) {
       //   break;
 
       default:
-        sendTextMessage(sender.id, availableCommands);
+        sendTextMessage(sender, availableCommands);
     }
   } else if (messageAttachments) {
     // sendTextMessage(senderID, "Message with attachment received");

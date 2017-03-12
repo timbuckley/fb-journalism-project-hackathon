@@ -17,6 +17,7 @@ function Firebase() {
 
   function userOptIn(userId, ts) {
     const postData = {
+      coordinates: [],
       timestamp: ts
     };
     const updates = {};
@@ -26,18 +27,12 @@ function Firebase() {
   }
 
   function addLocation(userId, params) {
-    const postData = {
-      coordinates: {
-        lat: params.coordinates.lat,
-        long: params.coordinates.long
-      },
-      ts: params.ts
+    const coordinates = {
+      lat: params.coordinates.lat,
+      long: params.coordinates.long
     }
 
-    const updates = {};
-
-    updates['/users/' + userId] = postData;
-    return _post(updates);
+    return firebase.database().ref('/users/' + userId).child('coordinates').push(coordinates);
   }
 
   function getUsers(params) {
@@ -95,6 +90,7 @@ function _get(params) {
 // update['/user-posts/' + uid + '/' + postId + '/lastNotificationTimestamp'] =
 //     firebase.database.ServerValue.TIMESTAMP;
 // firebase.database().ref().update(update);
+
 function _post(updates) {
   return firebase.database().ref().update(updates);
 }

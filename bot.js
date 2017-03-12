@@ -120,7 +120,7 @@ function receivedMessage(event) {
               sendTextMessage(sender.id, 'You are opted in. Thanks!');
             }).catch(function() {
               sendTextMessage(sender.id, 'Sorry. An error occured.');
-            }).done();
+            });
           break;
 
       case (messageText.indexOf(ADD_LOCATION_TRIGGER) === 0):
@@ -158,7 +158,7 @@ function receivedMessage(event) {
             sendTextMessage(sender.id, 'Location Added.');
           }).catch(function() {
             sendTextMessage(sender.id, 'Sorry. Unable to add location.');
-          }).done();  
+          });
       } else {
         sendTextMessage(sender.id, 'Apologies! Unable to add location.');
       }

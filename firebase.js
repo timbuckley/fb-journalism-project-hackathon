@@ -4,6 +4,7 @@ const firebase = require('firebase');
 
 function Firebase() {
   return {
+    addLocation: addLocation,
     getContent: getContent,
     getUsers: getUsers,
     init: init,

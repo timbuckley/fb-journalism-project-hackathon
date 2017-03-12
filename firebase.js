@@ -21,7 +21,18 @@ function Firebase() {
     const updates = {};
     
     updates['/users/' + userId] = postData;
+    return _post(updates);
+  }
 
+  function addLocation(userId, params) {
+    const postData = {
+      coordinates: params.coordinates,
+      ts: params.ts
+    }
+
+    const updates = {};
+
+    updates['/users/' + userId] = postData;
     return _post(updates);
   }
 

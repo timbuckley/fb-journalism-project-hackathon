@@ -3,53 +3,54 @@
 const firebase = require('firebase');
 
 function Firebase() {
-    function init() {
-      _authorize();
-    }    
+  return {
+    getContent: getContent,
+    getUsers: getUsers,
+    init: init,
+    userOptIn: userOptIn
+  }
 
-    function userOptIn(userId) {
-      const params = {
-        users: {
-          id: userId,
-        }  
-      };
+  function init() {
+    _authorize();
+  }    
 
-      _post(params);
+  function userOptIn(userId) {
+    const params = {
+      users: {
+        id: userId,
+      }  
+    };
+
+    _post(params);
+  }
+
+  function getUsers(params) {
+    switch(params) {
+      case 'byHood':
+          _get('/' + params.hood + '/users')
+        break;
+
+      default: //all
+        _get('/users')
+        break;
     }
+  }
 
-    function getUsers(params) {
-      switch(params) {
-        case 'byHood':
-            _get('/' + params.hood + '/users')
-          break;
+  function getContent(params) {
+    switch(params.contentType) {
+      case 'breaking':
+        break;
 
-        default: //all
-          _get('/users')
-          break;
-      }
+      case 'crime': 
+        break;
+
+      case 'traffic': 
+        break;
+
+      default: //all
+        break;
     }
-
-    function getContent(params) {
-      switch(params.contentType) {
-        case 'breaking':
-          break;
-
-        case 'crime': 
-          break;
-
-        case 'traffic': 
-          break;
-
-        default: //all
-          break;
-      }
-    }
-
-    return {
-      init: init,
-      getContent: getContent,
-      getUsers: getUsers
-    }
+  }
 }
 
 module.exports = Firebase;

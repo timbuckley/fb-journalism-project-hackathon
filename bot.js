@@ -152,6 +152,9 @@ function receivedMessage(event) {
     if (messageAttachments) {
       const coordinates = messageAttachments[0].payload.coordinates;
 
+      console.log('t: ', messageAttachments[0].type);
+      console.log('coordinates: ', coordinates);
+
       if (messageAttachments[0].type === 'location' && coordinates && coordinates.lat.length > 0 && coordinates.long.length > 0) {
         Firebase.addLocation(sender.id, coordinates)
           .then(function() {

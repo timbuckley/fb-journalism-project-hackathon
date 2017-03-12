@@ -15,14 +15,7 @@ function Firebase() {
   }    
 
   function userOptIn(userId) {
-    const postData = {
-      users: {
-        id: userId
-      }  
-    };
-    const updates = {};
-    
-    updates['/users/' + userId] = postData;
+    updates['/users/' + userId] = {};
 
     return _post(updates);
   }

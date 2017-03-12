@@ -11,7 +11,9 @@
   "dependencies": {
     "request": "^2.72.0",
     "express": "*",
-    "body-parser": "*"
+    "body-parser": "*",
+    "firebase": "*",
+    "mustache": "*"
   },
   "scripts": {
     "start": "node bot.js"

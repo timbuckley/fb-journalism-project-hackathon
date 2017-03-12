@@ -2,13 +2,20 @@
 // This is main file containing code implementing the Express server and functionality for the Express echo bot.
 //
 'use strict';
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 const path = require('path');
-var messengerButton = "<html><head><title>Facebook Messenger Bot</title></head><body><h1>Facebook Messenger Bot</h1>This is a bot based on Messenger Platform QuickStart. For more details, see their <a href=\"https://developers.facebook.com/docs/messenger-platform/guides/quick-start\">docs</a>.<footer id=\"gWidget\"></footer><script src=\"https://widget.gomix.me/widget.min.js\"></script></body></html>";
+const Mustache = require('mustache');
+const contentTemplate = require('./templates/content');
+const Firebase = new require('./firebase')();
+const OptIn = new require('./handlers/optin')();
 
+Firebase.init();
 // The rest of the code implements the routes for our Express server.
+
+
 let app = express();
 
 app.use(bodyParser.json());
@@ -31,7 +38,7 @@ app.get('/webhook', function(req, res) {
 // Display the web page
 app.get('/', function(req, res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write(messengerButton);
+  res.write(fs.readFileSync('./templates/index.html', 'utf8'));
   res.end();
 });
 
@@ -70,54 +77,73 @@ app.post('/webhook', function (req, res) {
 });
 
 // Incoming events handling
-var melissa = "100007352556474";
-var tim = "10100621626986695";
-// var vincent = "10155073658881532";
-var vincent = "1292253867476452"; //
-// var chris = "10155471735122971";
-var chris = "1414479738602901"; //
+// var melissa = "100007352556474";
+// var tim = "10100621626986695";
+// // var vincent = "10155073658881532";
+// var vincent = "1292253867476452"; //
+// // var chris = "10155471735122971";
+// var chris = "1414479738602901"; //
 
-var admins = [vincent, tim];
+// var admins = [vincent];
 
-var ALL_SENDERS = [];
+// var ALL_SENDERS = [];
 
 function receivedMessage(event) {
-  var senderID = event.sender.id;
-  ALL_SENDERS.push(senderID);
-  if (senderID === melissa) {console.info('Hi Melissa!')}
-  var recipientID = event.recipient.id;
-  var timeOfMessage = event.timestamp;
-  var message = event.message;
+  // var senderID = event.sender.id;
+  // ALL_SENDERS.push(senderID);
+  // if (senderID === melissa) {console.info('Hi Melissa!')}
+  // var recipientID = event.recipient.id;
+  // var timeOfMessage = event.timestamp;
+  const message = event.message;
+  const sender = event.sender;
+  const recipient = event.recipient;
+  const ts = event.timestamp;
+  const OPT_IN_TRIGGER = 'Opt in';
+  const ADD_LOCATION_TRIGGER = 'Add location';
+
+  const availableCommands = 'Availble Commands:' 
+    + '"Opt in" \n'
+    + '"Add location" \n';
 
   console.log("Received message for user %d and page %d at %d with message:", 
     senderID, recipientID, timeOfMessage);
   console.log(JSON.stringify(message));
 
   var messageId = message.mid;
-
   var messageText = message.text;
   var messageAttachments = message.attachments;
 
   if (messageText) {
-    // If we receive a text message, check to see if it matches a keyword
-    // and send back the template example. Otherwise, just echo the text we received.
-    switch (messageText) {
-      case 'trigger!':
-        admins.forEach(function(id) {sendGenericMessage(id, 'This is a spam message');})
-        break;
-      case 'hi to melissa':
-        sendGenericMessage(melissa, "Hiiiiii!")
-        break;
-        
-      case 'generic':
-        sendGenericMessage(senderID);
+    switch (true) {
+      case (OPT_IN_TRIGGER === messageText):
+        OptIn.addUser(messageText.replace(OPT_IN_TRIGGER, '').trim(), {timestamp: ts});
+
         break;
 
+      case (messageText.indexOf(ADD_LOCATION_TRIGGER) === 0):
+        // add location 
+
+
+        //parse message
+        break;
+
+
+      // case 'trigger!':
+      //   admins.forEach(function(id) {sendMessage(id, 'This is a spam message');})
+      //   break;
+      // case 'hi to melissa':
+      //   sendMessage(melissa, "Hiiiiii!")
+      //   break;
+        
+      // case 'generic':
+      //   sendMessage(senderID);
+      //   break;
+
       default:
-        sendTextMessage(senderID, messageText);
+        sendTextMessage(senderID, availableCommands);
     }
   } else if (messageAttachments) {
-    sendTextMessage(senderID, "Message with attachment received");
+    // sendTextMessage(senderID, "Message with attachment received");
   }
 }
 
@@ -154,49 +180,13 @@ function sendTextMessage(recipientId, messageText) {
   callSendAPI(messageData);
 }
 
-function sendGenericMessage(recipientId) {
-  var messageData = {
+function sendMessage(recipientId, template, params) {
+  var messageDate = {
     recipient: {
       id: recipientId
     },
-    message: {
-      attachment: {
-        type: "template",
-        payload: {
-          template_type: "generic",
-          elements: [{
-            title: "rift",
-            subtitle: "Next-generation virtual reality",
-            item_url: "https://www.oculus.com/en-us/rift/",               
-            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/rift/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for first bubble",
-            }],
-          }, {
-            title: "touch",
-            subtitle: "Your Hands, Now in VR",
-            item_url: "https://www.oculus.com/en-us/touch/",               
-            image_url: "http://messengerdemo.parseapp.com/img/touch.png",
-            buttons: [{
-              type: "web_url",
-              url: "https://www.oculus.com/en-us/touch/",
-              title: "Open Web URL"
-            }, {
-              type: "postback",
-              title: "Call Postback",
-              payload: "Payload for second bubble",
-            }]
-          }]
-        }
-      }
-    }
-  };  
+    message: Mustache.render(template, params)
+  }
 
   callSendAPI(messageData);
 }

@@ -150,10 +150,10 @@ function receivedMessage(event) {
 
     // {"mid":"mid.1489301909809:341fcfcb85","seq":3639,"attachments":[{"title":"Vincent's Location","url":"https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.bing.com%2Fmaps%2Fdefault.aspx%3Fv%3D2%26pc%3DFACEBK%26mid%3D8100%26where1%3D40.588296%252C%2B-74.458175%26FORM%3DFBKPL1%26mkt%3Den-US&h=ATOGp5Hz6F9DxD2x1W0hKK8yEGSns4iy_SKGjxMhQh5Uvc53u09u_0hdI2_qaYYCeu55TN_d2lHmn7gCOXAZdJY5hp8gfbC-4Mw6HlkqUI75&s=1&enc=AZNxOVS6D_Dyl5PGsXEyMUIayWa0dF8z9_Epyn0xqVJkj3xsh5AqG2S95eWp_ALY9Jq6NgpsiU8Jqm34bUOg4V7S","type":"location","payload":{"coordinates":{"lat":40.588296,"long":-74.458175}}}]}
     if (messageAttachments) {
-      const coordinates = messageAttachments.payload.coordinates;
+      const coordinates = messageAttachments[0].payload.coordinates;
 
-      if (messageAttachments.type === 'location' && coordinates && coordinates.lat.length > 0 && coordinates.long.length > 0) {
-        Firebase.addLocation(sender.id, {coordinates: coordinates, ts: ts})
+      if (messageAttachments[0].type === 'location' && coordinates && coordinates.lat.length > 0 && coordinates.long.length > 0) {
+        Firebase.addLocation(sender.id, {coordinates: {lat: coordinates.lat, long: coordinates.long}, ts: ts})
           .then(function() {
             sendTextMessage(sender.id, 'Location Added.');
           }).catch(function() {

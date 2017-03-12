@@ -10,7 +10,6 @@ const path = require('path');
 const Mustache = require('mustache');
 const contentTemplate = require('./templates/content');
 const Firebase = new require('./firebase')();
-const OptIn = new require('./handlers/optin')();
 
 Firebase.init();
 // The rest of the code implements the routes for our Express server.
@@ -116,8 +115,7 @@ function receivedMessage(event) {
   if (messageText) {
     switch (true) {
       case (OPT_IN_TRIGGER === messageText):
-        OptIn.addUser(messageText.replace(OPT_IN_TRIGGER, '').trim(), {sender: sender, timestamp: ts});
-
+        Firebase.userOptIn(sender.id)
         break;
 
       case (messageText.indexOf(ADD_LOCATION_TRIGGER) === 0):

@@ -7,6 +7,16 @@ function Firebase() {
       _authorize();
     }    
 
+    function userOptIn(userId) {
+      const params = {
+        users: {
+          id: userId,
+        }  
+      };
+
+      _post(params);
+    }
+
     function getUsers(params) {
       switch(params) {
         case 'byHood':
@@ -69,7 +79,7 @@ function _get(params) {
 //     firebase.database.ServerValue.TIMESTAMP;
 // firebase.database().ref().update(update);
 function _post(params) {
-  const db = firebase.database();
+  const db = firebase.database().update(params);
 }
 
 

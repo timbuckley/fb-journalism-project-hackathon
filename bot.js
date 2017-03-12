@@ -140,7 +140,7 @@ function receivedMessage(event) {
       //   break;
 
       default:
-        sendTextMessage(sender, availableCommands);
+        sendTextMessage(sender.id, availableCommands);
     }
   } else if (messageAttachments) {
     // sendTextMessage(senderID, "Message with attachment received");

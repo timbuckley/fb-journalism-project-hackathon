@@ -106,7 +106,7 @@ function receivedMessage(event) {
     + '"Add location" \n';
 
   console.log("Received message for user %d and page %d at %d with message:", 
-    sender.id, recipient.id, timeOfMessage);
+    sender.id, recipient.id, ts);
   console.log(JSON.stringify(message));
 
   var messageId = message.mid;

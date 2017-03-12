@@ -15,13 +15,16 @@ function Firebase() {
   }    
 
   function userOptIn(userId) {
-    const params = {
+    const postData = {
       users: {
-        id: userId,
+        id: userId
       }  
     };
+    const updates = {};
+    
+    updates['/users/' + userId] = postData;
 
-    _post(params);
+    return _post(updates);
   }
 
   function getUsers(params) {
@@ -79,8 +82,8 @@ function _get(params) {
 // update['/user-posts/' + uid + '/' + postId + '/lastNotificationTimestamp'] =
 //     firebase.database.ServerValue.TIMESTAMP;
 // firebase.database().ref().update(update);
-function _post(params) {
-  const db = firebase.database().update(params);
+function _post(updates) {
+  return firebase.database().ref().update(updates);
 }
 
 

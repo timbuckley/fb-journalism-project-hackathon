@@ -115,8 +115,15 @@ function receivedMessage(event) {
   if (messageText) {
     switch (true) {
       case (OPT_IN_TRIGGER === messageText):
-        Firebase.userOptIn(sender.id)
-        break;
+      return firebase.database().ref().update(updates);
+
+        Firebase.userOptIn(sender.id, ts)
+          .success(function() {
+            sendTextMessage(sender.id, 'You are opted in. Thanks!');
+          }).error(function() {
+            sendTextMessage(sender.id, 'Sorry. An error occured.');
+          });
+          break;
 
       case (messageText.indexOf(ADD_LOCATION_TRIGGER) === 0):
         // add location 

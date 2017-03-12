@@ -14,8 +14,13 @@ function Firebase() {
     _authorize();
   }    
 
-  function userOptIn(userId) {
-    updates['/users/' + userId] = {};
+  function userOptIn(userId, ts) {
+    const postData = {
+      timestamp: ts
+    };
+    const updates = {};
+    
+    updates['/users/' + userId] = postData;
 
     return _post(updates);
   }

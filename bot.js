@@ -116,9 +116,9 @@ function receivedMessage(event) {
     switch (true) {
       case (OPT_IN_TRIGGER === messageText):
           Firebase.userOptIn(sender.id, ts)
-            .success(function() {
+            .then(function() {
               sendTextMessage(sender.id, 'You are opted in. Thanks!');
-            }).error(function() {
+            }).catch(function() {
               sendTextMessage(sender.id, 'Sorry. An error occured.');
             });
           break;

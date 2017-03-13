@@ -112,8 +112,8 @@ function receivedMessage(event) {
   const ADD_LOCATION_TRIGGER = 'Add location';
 
   const availableCommands = 'Availble Commands:\n\n' 
-    + '"Opt in" \n\n'
-    + '"Add location" \n\n';
+    + '"Opt in" - Adds you to notifications list  \n\n'
+    + 'Send a location to be notified! \n\n';
 
   console.log("Received message for user %d and page %d at %d with message:", 
     sender.id, recipient.id, ts);

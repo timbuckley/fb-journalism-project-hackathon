@@ -41,6 +41,17 @@ app.get('/', function(req, res) {
   res.end();
 });
 
+app.post('/notifyusers', function (req, res) {
+    console.log(req.body);
+    var data = req.body;
+
+    if (data.object === 'page') {
+      console.log('xxxxxxx: ', data);
+    }
+
+    res.sendStatus(200);
+});
+
 // Message processing
 app.post('/webhook', function (req, res) {
   console.log(req.body);

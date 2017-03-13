@@ -10,12 +10,27 @@
             display: block;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+    function notifyUsers(hood) {
+        $.ajax({
+          url: '/notifyusers?hood=' + hood,
+          method: 'get'
+          // context: document.body
+        }).done(function(response) {
+            console.log('notifyUsers Response: ', response);
+          $('.console').html(response);
+        });
+    }
+    </script>
 
     <body>
         <div>
-             <button>NOTIFY USERS IN UPPER WEST SIDE</button>
-             <button>NOTIFY USERS IN TIMES SQUARE</button>
-             <button>NOTIFY USERS IN FB HQ NYC</button>
+            <button onclick="notifyusers('uws');">NOTIFY USERS IN UPPER WEST SIDE</button>
+            <button onclick="notifyusers('times-square');">NOTIFY USERS IN TIMES SQUARE</button>
+            <button onclick="notifyusers('fb-hq-nyc');">NOTIFY USERS IN FB HQ NYC</button>
+
+            <div class="console"></div>
         </div>
     </body>
 

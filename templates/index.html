@@ -13,14 +13,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
     function notifyUsers(hood) {
-        $.ajax({
-          url: '/notifyusers?hood=' + hood,
-          method: 'get'
-          // context: document.body
-        }).done(function(response) {
-            console.log('notifyUsers Response: ', response);
-          $('.console').html(response);
-        });
+        // $.ajax({
+        //   url: '/notifyusers?hood=' + hood,
+        //   method: 'get'
+        //   // context: document.body
+        // }).done(function(response) {
+        //     console.log('notifyUsers Response: ', response);
+        //   $('.console').html(response);
+        // });
     }
     </script>
 

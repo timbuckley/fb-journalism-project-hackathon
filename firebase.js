@@ -38,12 +38,10 @@ function Firebase() {
   function getUsers(params) {
     switch (params) {
       case 'byHood':
-          _get('/' + params.hood + '/users')
-        break;
+        return _get('/' + params.hood + '/users')
 
       default: //all
-        _get('/users')
-        break;
+        return _get('/users')
     }
   }
 
@@ -80,7 +78,7 @@ function _authorize() {
 
 // var topPostsRef = firebase.database().ref('/posts').orderByChild('starCount').limitToLast(5);
 function _get(params) {
-  const db = firebase.database().ref(params)
+  return firebase.database().ref(params)
 }
 
 

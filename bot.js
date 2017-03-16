@@ -13,7 +13,9 @@ const Firebase = new require('./firebase')();
 
 Firebase.init();
 // The rest of the code implements the routes for our Express server.
-
+function prettyPrint(obj, msg) {
+  return console.log(msg, JSON.stringify(obj, null, 2))
+}
 
 let app = express();
 
@@ -42,12 +44,23 @@ app.get('/', function(req, res) {
 });
 
 app.post('/notifyusers', function (req, res) {
-    console.log(req.body);
-    var data = req.body;
+    console.log('POST to /notifyusers');
+    console.log('Body', req.body)
+    var text = req.body.text
 
-    if (data.object === 'page') {
-      console.log('xxxxxxx: ', data);
-    }
+    // Get all users.
+    var allUsersRef = Firebase.getUsers().once('value');
+
+    allUsersRef.then(allUsersData => {
+      // Gotta turn the allUsersData promise into a pure allUsersData object.
+      var vals = allUsersData.val();
+
+      var userIds = Object.keys(vals);
+      console.log('Sneding to userIds:', userIds);
+      userIds.forEach(userId => {
+        sendTextMessage(userId, text)
+      });
+    })
 
     res.sendStatus(200);
 });
@@ -208,6 +221,7 @@ function sendTextMessage(recipientId, messageText) {
       text: messageText
     }
   };
+  console.log('Sending', messageText, ' to ', recipientId)
 
   callSendAPI(messageData);
 }

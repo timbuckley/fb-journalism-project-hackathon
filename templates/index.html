@@ -1,42 +1,60 @@
 <!doctype html>
 <html lang=en-us><meta charset=utf-8>
-    <head>
-
-    </head>
-    <style>
-        button {
-            font-size: 18px;
-            margin: 10px;
-            display: block;
-        }
-    </style>
+  <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script>
-    function notifyUsers(hood) {
-        // $.ajax({
-        //   url: '/notifyusers?hood=' + hood,
-        //   method: 'get'
-        //   // context: document.body
-        // }).done(function(response) {
-        //     console.log('notifyUsers Response: ', response);
-        //   $('.console').html(response);
-        // });
+  </head>
+  <style>
+    button {
+      font-size: 18px;
+      margin: 10px;
+      display: block;
     }
-    </script>
+  </style>
 
-    <body>
-        <div>
-            <button onclick="notifyusers('uws');">NOTIFY USERS IN UPPER WEST SIDE</button>
-            <button onclick="notifyusers('times-square');">NOTIFY USERS IN TIMES SQUARE</button>
-            <button onclick="notifyusers('fb-hq-nyc');">NOTIFY USERS IN FB HQ NYC</button>
-            <br/>
-            <form class="broadcast" action="/broadcast" method="POST">
-              <label>Broadcast to all users:</label>
-              <input name="text" type="text">
-              <button type="submit" name="button">Submit</button>
-            </form>
-            <div class="console"></div>
-        </div>
-    </body>
+  <body>
+    <div>
+      <button onclick="notifyusers('uws');">NOTIFY USERS IN UPPER WEST SIDE</button>
+      <button onclick="notifyusers('times-square');">NOTIFY USERS IN TIMES SQUARE</button>
+      <button onclick="notifyusers('fb-hq-nyc');">NOTIFY USERS IN FB HQ NYC</button>
 
+      <br/>
+      <div class="broadcast">
+        <label>Broadcast to all users:</label>
+        <input class="text" type="text">
+        <button class="send">Send Message to All</button>
+        <span class="status"></span>
+      </div>
+
+      <div class="console"></div>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    var broadcastTextField = $('div.broadcast>input.text');
+    var broadcastButton = $('div.broadcast>button.send');
+    var broadcastStatus = $('div.broadcast>span.status');
+
+    broadcastButton.on('click', () => {
+      var text = broadcastTextField.val();
+      notifyUsers(text)
+        .then(() => {
+          broadcastStatus.text('Worked! Sent "' + text + '" to all users.');
+        })
+    })
+
+    function notifyUsers(text, hood) {
+      var query = hood ? '' : '?hood=' + hood;
+      return fetch('/notifyusers' + query,
+        {
+          method: 'POST',
+          body: JSON.stringify({ text: text }),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          }
+        })
+        .then((resp) => console.log('resp,', resp))
+        .catch((error) => console.error('error,', error));
+    }
+  </script>
 </html>

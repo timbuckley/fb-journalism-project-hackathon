@@ -13,7 +13,7 @@ function Firebase() {
 
   function init() {
     _authorize();
-  }    
+  }
 
   function userOptIn(userId, ts) {
     const postData = {
@@ -21,7 +21,7 @@ function Firebase() {
       timestamp: ts
     };
     const updates = {};
-    
+
     updates['/users/' + userId] = postData;
     return _post(updates);
   }
@@ -36,14 +36,12 @@ function Firebase() {
   }
 
   function getUsers(params) {
-    switch(params) {
+    switch (params) {
       case 'byHood':
-          _get('/' + params.hood + '/users')
-        break;
+        return _get('/' + params.hood + '/users')
 
       default: //all
-        _get('/users')
-        break;
+        return _get('/users')
     }
   }
 
@@ -52,10 +50,10 @@ function Firebase() {
       case 'breaking':
         break;
 
-      case 'crime': 
+      case 'crime':
         break;
 
-      case 'traffic': 
+      case 'traffic':
         break;
 
       default: //all
@@ -69,18 +67,18 @@ module.exports = Firebase;
 function _authorize() {
   var ENV_VAR = process.env;
   var config = {
-    apiKey: 'AIzaSyCkaFlqg8b0Wu2BSyaJYsiKpWkoEBx1czc', 
+    apiKey: 'AIzaSyCkaFlqg8b0Wu2BSyaJYsiKpWkoEBx1czc',
     authDomain: 'fb-journalism-hackathon.firebaseapp.com',
     databaseURL: 'https://fb-journalism-hackathon.firebaseio.com',
     storageBucket: 'fb-journalism-hackathon.appspot.com'
   };
-  
+
   firebase.initializeApp(config);
 }
 
 // var topPostsRef = firebase.database().ref('/posts').orderByChild('starCount').limitToLast(5);
 function _get(params) {
-  const db = firebase.database().ref(params)
+  return firebase.database().ref(params)
 }
 
 
@@ -94,5 +92,3 @@ function _get(params) {
 function _post(updates) {
   return firebase.database().ref().update(updates);
 }
-
-

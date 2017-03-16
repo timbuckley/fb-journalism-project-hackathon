@@ -29,7 +29,12 @@
             <button onclick="notifyusers('uws');">NOTIFY USERS IN UPPER WEST SIDE</button>
             <button onclick="notifyusers('times-square');">NOTIFY USERS IN TIMES SQUARE</button>
             <button onclick="notifyusers('fb-hq-nyc');">NOTIFY USERS IN FB HQ NYC</button>
-
+            <br/>
+            <form class="broadcast" action="/broadcast" method="POST">
+              <label>Broadcast to all users:</label>
+              <input name="text" type="text">
+              <button type="submit" name="button">Submit</button>
+            </form>
             <div class="console"></div>
         </div>
     </body>

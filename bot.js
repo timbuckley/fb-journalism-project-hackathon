@@ -167,7 +167,8 @@ function receivedMessage(event) {
       //   break;
 
       default:
-        sendTextMessage(sender.id, availableCommands);
+        // sendTextMessage(sender.id, availableCommands);
+        break;
     }
   } else if (messageAttachments) {
     //handleLocationPlot
